@@ -1,4 +1,4 @@
 #import <Flutter/Flutter.h>
 
-@interface SecureScreenPlugin : NSObject<FlutterPlugin>
+@interface ProtectedScreenPlugin : NSObject<FlutterPlugin>
 @end

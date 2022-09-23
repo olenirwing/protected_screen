@@ -1,8 +1,7 @@
 import Flutter
 import UIKit
 
-public class SwiftSecureScreenPlugin: NSObject, FlutterPlugin {
-    var secured = false;
+public class SwiftProtectedScreenPlugin: NSObject, FlutterPlugin {
     var backgroundTask: UIBackgroundTaskIdentifier!
     
     internal let registrar: FlutterPluginRegistrar
@@ -14,24 +13,19 @@ public class SwiftSecureScreenPlugin: NSObject, FlutterPlugin {
     }
     
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "secure_screen", binaryMessenger: registrar.messenger())
-        let instance = SwiftSecureScreenPlugin(registrar: registrar)
+        let channel = FlutterMethodChannel(name: "protected_screen", binaryMessenger: registrar.messenger())
+        let instance = SwiftProtectedScreenPlugin(registrar: registrar)
         registrar.addMethodCallDelegate(instance, channel: channel)
         registrar.addApplicationDelegate(instance) //
     }
-    
-    public func applicationWillResignActive(_ application: UIApplication) {
         
-    }
-    
     public func goToBackground() {
-        if ( secured ) {
+
             self.registerBackgroundTask()
             UIApplication.shared.ignoreSnapshotOnNextApplicationLaunch()
             if let window = UIApplication.shared.windows.filter({ (w) -> Bool in
                 return w.isHidden == false
             }).first {
-                
                 if let existingView = window.viewWithTag(99697) {
                     window.bringSubviewToFront(existingView)
                     return
@@ -41,7 +35,7 @@ public class SwiftSecureScreenPlugin: NSObject, FlutterPlugin {
                     imageView.clipsToBounds = true
                     imageView.contentMode = .center
 //                    imageView.backgroundColor = UIColor(white: 1, alpha: 0.8)
-                    imageView.image = UIImage(named: "SecureScreenImage")
+                    imageView.image = UIImage(named: "ProtectedScreenImage")
                     imageView.isMultipleTouchEnabled = true
                     imageView.translatesAutoresizingMaskIntoConstraints = false
                     
@@ -62,7 +56,6 @@ public class SwiftSecureScreenPlugin: NSObject, FlutterPlugin {
                     RunLoop.current.run(until: Date(timeIntervalSinceNow:0.5))
             
                 }
-            }
             self.endBackgroundTask()
         }
     }
@@ -82,14 +75,9 @@ public class SwiftSecureScreenPlugin: NSObject, FlutterPlugin {
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        if (call.method == "secure") {
-            if (secured == false) {
-                secured = true;
-                goToBackground()
-            }
-            
-        } else if (call.method == "unsecure") {
-            secured = false;
+        if (call.method == "addProtection") {
+            goToBackground()
+        } else if (call.method == "removeProtection") {
             if let window = UIApplication.shared.windows.filter({ (w) -> Bool in
                 return w.isHidden == false
             }).first {

@@ -1,4 +1,4 @@
-package com.example.secure_screen_example
+package com.example.protected_screen_example
 
 import io.flutter.embedding.android.FlutterActivity
 

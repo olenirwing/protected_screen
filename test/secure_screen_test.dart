@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:secure_screen/secure_screen_native.dart';
+import 'package:protected_screen/protected_screen_native.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('secure_screen');
+  const MethodChannel channel = MethodChannel('protected_screen');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 

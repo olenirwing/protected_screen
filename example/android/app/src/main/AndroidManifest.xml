@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.secure_screen_example">
+    package="com.example.protected_screen_example">
    <application
-        android:label="secure_screen_example"
+        android:label="protected_screen_example"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

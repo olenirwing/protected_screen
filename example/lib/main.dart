@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:secure_screen/secure_screen.dart';
-import 'package:secure_screen/secure_screen_native.dart';
+import 'package:protected_screen/protected_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,12 +30,22 @@ class Home extends StatelessWidget {
   }
 }
 
-class SecuredScreen extends StatelessWidget {
+class SecuredScreen extends StatefulWidget {
   const SecuredScreen({Key? key}) : super(key: key);
 
   @override
+  State<SecuredScreen> createState() => _SecuredScreenState();
+}
+
+class _SecuredScreenState extends State<SecuredScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SecureScreen(
+    return ProtectedScreen(
       child: Scaffold(
         appBar: AppBar(),
         body: Center(

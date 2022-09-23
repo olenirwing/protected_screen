@@ -1,6 +1,6 @@
-# secure_screen_example
+# protected_screen_example
 
-Demonstrates how to use the secure_screen plugin.
+Demonstrates how to use the protected_screen plugin.
 
 ## Getting Started
 

@@ -1,4 +1,4 @@
-name: secure_screen
+name: protected_screen
 description: A new flutter plugin project.
 version: 0.0.1
 
@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_windowmanager: ^0.2.0
   visibility_detector: ^0.2.2
 
 
@@ -43,10 +44,10 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.secure_screen
-        pluginClass: SecureScreenPlugin
+        package: com.example.protected_screen
+        pluginClass: ProtectedScreenPlugin
       ios:
-        pluginClass: SecureScreenPlugin
+        pluginClass: ProtectedScreenPlugin
 
 
 

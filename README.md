@@ -1,4 +1,4 @@
-# secure_screen
+# protected_screen
 
 A new flutter plugin project.
 
