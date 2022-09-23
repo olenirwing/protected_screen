@@ -5,22 +5,32 @@ public class SwiftProtectedScreenPlugin: NSObject, FlutterPlugin {
     var backgroundTask: UIBackgroundTaskIdentifier!
     
     internal let registrar: FlutterPluginRegistrar
-    
+    var protectOnPause = false;
+
     init(registrar: FlutterPluginRegistrar) {
         self.registrar = registrar
         super.init()
-        // registrar.addApplicationDelegate(self)
+        registrar.addApplicationDelegate(self)
     }
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "protected_screen", binaryMessenger: registrar.messenger())
         let instance = SwiftProtectedScreenPlugin(registrar: registrar)
         registrar.addMethodCallDelegate(instance, channel: channel)
-        registrar.addApplicationDelegate(instance) //
+        // registrar.addApplicationDelegate(instance) //
+    }
+
+    public func applicationWillResignActive(_ application: UIApplication) {
+        if (protectOnPause) {
+            addOverlayView()
+        }
+    }
+
+    public func applicationDidBecomeActive(_ application: UIApplication) {
+        removeOverlayView();
     }
         
-    public func goToBackground() {
-
+    public func addOverlayView() {
             self.registerBackgroundTask()
             UIApplication.shared.ignoreSnapshotOnNextApplicationLaunch()
             if let window = UIApplication.shared.windows.filter({ (w) -> Bool in
@@ -60,6 +70,17 @@ public class SwiftProtectedScreenPlugin: NSObject, FlutterPlugin {
         }
     }
     
+
+    private func removeOverlayView() {
+        if let window = UIApplication.shared.windows.filter({ (w) -> Bool in
+                return w.isHidden == false
+            }).first {
+                if let view = window.viewWithTag(99697), let blurrView = window.viewWithTag(99698) {
+                    view.removeFromSuperview()
+                    blurrView.removeFromSuperview()
+                }
+        }
+    }
     
     func registerBackgroundTask() {
         self.backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
@@ -75,17 +96,10 @@ public class SwiftProtectedScreenPlugin: NSObject, FlutterPlugin {
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        if (call.method == "addProtection") {
-            goToBackground()
-        } else if (call.method == "removeProtection") {
-            if let window = UIApplication.shared.windows.filter({ (w) -> Bool in
-                return w.isHidden == false
-            }).first {
-                if let view = window.viewWithTag(99697), let blurrView = window.viewWithTag(99698) {
-                    view.removeFromSuperview()
-                    blurrView.removeFromSuperview()
-                }
-            }
+        if (call.method == "addProtectionForPause") {
+            protectOnPause = true
+        } else if (call.method == "removeProtectionForPause") {
+            protectOnPause = false
         }
     }
 }
