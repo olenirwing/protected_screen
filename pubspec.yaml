@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_windowmanager: ^0.2.0
   visibility_detector: ^0.2.2
 
 

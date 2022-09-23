@@ -49,8 +49,6 @@ public class SwiftProtectedScreenPlugin: NSObject, FlutterPlugin {
                     imageView.isMultipleTouchEnabled = true
                     imageView.translatesAutoresizingMaskIntoConstraints = false
                     
-                   
-                    
                     let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
                     let blurEffectView = UIVisualEffectView(effect: blurEffect)
                     blurEffectView.frame = window.bounds
