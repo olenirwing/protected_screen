@@ -10,40 +10,50 @@ class ProtectedScreen extends StatefulWidget {
   State<ProtectedScreen> createState() => _ProtectedScreenState();
 }
 
-class _ProtectedScreenState extends State<ProtectedScreen> with WidgetsBindingObserver {
-  VisibilityInfo visibilityInfo = const VisibilityInfo(key: ValueKey(null));
-
-  bool get isVisible => visibilityInfo.visibleFraction > 0;
+class _ProtectedScreenState extends State<ProtectedScreen> {
+  bool isVisible = true;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    ProtectedScreenHandler.addProtectionForPause();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final bool movingToBackground =
-        state == AppLifecycleState.inactive || state == AppLifecycleState.paused || state == AppLifecycleState.detached;
-    if (!isVisible) return;
-    if (movingToBackground) {
-      ProtectedScreenHandler.addProtection();
+  void _onVisibilityLost() {
+    // if the widget is not visible, there can be no information that needs protection, so remove protection for next pause
+    ProtectedScreenHandler.removeProtectionForPause();
+  }
+
+  void _onVisibilityGained() {
+    // if the widget is visible, hide the screen in the app switcher
+    ProtectedScreenHandler.addProtectionForPause();
+  }
+
+  void _onVisibilityInfoChanged(VisibilityInfo newInfo) {
+    // if visibility status didnt change do nothing
+    if (newInfo.isVisible == isVisible) return;
+    if (newInfo.isVisible) {
+      _onVisibilityGained();
     } else {
-      ProtectedScreenHandler.removeProtection();
+      _onVisibilityLost();
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    WidgetsBinding.instance!.removeObserver(this);
+    ProtectedScreenHandler.removeProtectionForPause();
   }
 
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
-        key: const ValueKey("protected_screen"),
-        onVisibilityChanged: (info) => visibilityInfo = info,
-        child: widget.child);
+        key: const ValueKey("protected_screen"), onVisibilityChanged: _onVisibilityInfoChanged, child: widget.child);
+  }
+}
+
+extension on VisibilityInfo {
+  bool get isVisible {
+    return visibleFraction > 0;
   }
 }
