@@ -32,6 +32,7 @@ class _ProtectedScreenState extends State<ProtectedScreen> {
   void _onVisibilityInfoChanged(VisibilityInfo newInfo) {
     // if visibility status didnt change do nothing
     if (newInfo.isVisible == isVisible) return;
+    isVisible = newInfo.isVisible;
     if (newInfo.isVisible) {
       _onVisibilityGained();
     } else {
