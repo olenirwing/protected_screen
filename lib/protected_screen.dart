@@ -16,17 +16,17 @@ class _ProtectedScreenState extends State<ProtectedScreen> {
   @override
   void initState() {
     super.initState();
-    ProtectedScreenHandler.addProtectionForPause();
+    ProtectedScreenHandler.addProtection();
   }
 
   void _onVisibilityLost() {
     // if the widget is not visible, there can be no information that needs protection, so remove protection for next pause
-    ProtectedScreenHandler.removeProtectionForPause();
+    ProtectedScreenHandler.removeProtection();
   }
 
   void _onVisibilityGained() {
     // if the widget is visible, hide the screen in the app switcher
-    ProtectedScreenHandler.addProtectionForPause();
+    ProtectedScreenHandler.addProtection();
   }
 
   void _onVisibilityInfoChanged(VisibilityInfo newInfo) {
@@ -43,7 +43,7 @@ class _ProtectedScreenState extends State<ProtectedScreen> {
   @override
   void dispose() {
     super.dispose();
-    ProtectedScreenHandler.removeProtectionForPause();
+    ProtectedScreenHandler.removeProtection();
   }
 
   @override

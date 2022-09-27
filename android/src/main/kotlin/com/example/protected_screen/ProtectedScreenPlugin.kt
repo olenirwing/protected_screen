@@ -33,24 +33,14 @@ class ProtectedScreenPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         // higherThanAndroid12 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
     }
 
-    // private fun view(): ViewGroup? = activity?.findViewById(android.R.id.content)
-
-    // private fun visible() {
-    //     view()?.visibility = View.VISIBLE
-    // }
-
-    // private fun invisible() {
-    //     view()?.visibility = View.INVISIBLE
-    // }
-
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) =
         when (call.method) {
-            "addProtectionForPause" -> {
-                protectOnPause = true
+            "addProtection" -> {
+                activity?.window?.addFlags(LayoutParams.FLAG_SECURE)
                 result.success(true)
             }
-            "removeProtectionForPause" -> {
-              protectOnPause = false
+            "removeProtection" -> {
+              activity?.window?.clearFlags(LayoutParams.FLAG_SECURE)
               result.success(true)
             }
             else -> result.success(false)
@@ -62,19 +52,6 @@ class ProtectedScreenPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activity = binding.activity
-        (binding.lifecycle as HiddenLifecycleReference)
-        .lifecycle
-        .addObserver(LifecycleEventObserver { source, event ->
-            Log.e("Activity state: ", event.toString())
-            when (event.toString()) {
-                "ON_PAUSE", "ON_STOP" -> {
-                    if (protectOnPause) activity?.window?.addFlags(LayoutParams.FLAG_SECURE)
-                }
-                "ON_START", "ON_RESUME" -> {
-                    activity?.window?.clearFlags(LayoutParams.FLAG_SECURE)
-                }
-            }
-        })
     }
 
     override fun onDetachedFromActivityForConfigChanges() {

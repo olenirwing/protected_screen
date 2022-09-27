@@ -94,9 +94,9 @@ public class SwiftProtectedScreenPlugin: NSObject, FlutterPlugin {
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        if (call.method == "addProtectionForPause") {
+        if (call.method == "addProtection") {
             protectOnPause = true
-        } else if (call.method == "removeProtectionForPause") {
+        } else if (call.method == "removeProtection") {
             protectOnPause = false
         }
     }
